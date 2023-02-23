@@ -1,0 +1,55 @@
+// Solidity program to implement
+// the above approach
+pragma solidity ^0.8.17;
+
+// Build the Contract
+contract MarksManagmtSys
+{
+	// Create a structure for
+	// student details
+	struct Student
+	{
+		int roll;
+		string fName;
+		int marks;
+        int marks2;
+        int marks3;
+        int sem;
+        int average;
+	}
+
+	address owner;
+	int public stdCount = 0;
+	mapping(int => Student) public stdRecords;
+
+	modifier onlyOwner
+	{
+		require(owner == msg.sender);
+		_;
+	}
+	constructor()
+	{
+		owner=msg.sender;
+	}
+
+	// Create a function to add
+	// the new records
+	function addNewRecords(int _roll,
+						string memory _fName,
+						int _marks,int _marks2,int _marks3,int _sem,int _average) public onlyOwner
+	{
+		// Increase the count by 1
+		stdCount = stdCount + 1;
+
+		// Fetch the student details
+		// with the help of stdCount
+		stdRecords[stdCount] = Student(_roll, _fName, _marks, _marks2, _marks3,_sem,_average);
+	}
+
+	// Create a function to add bonus marks
+	function average(int _stdCount) public 
+	{
+		stdRecords[stdCount].average =
+					((stdRecords[stdCount].marks) + (stdRecords[stdCount].marks2)+(stdRecords[stdCount].marks3))/3;
+	}
+}
